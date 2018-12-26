@@ -129,6 +129,7 @@
             this.btnAddOne.TabIndex = 7;
             this.btnAddOne.Text = "Add";
             this.btnAddOne.UseVisualStyleBackColor = true;
+            this.btnAddOne.Click += new System.EventHandler(this.btnAddOne_Click);
             // 
             // GridView
             // 
@@ -147,6 +148,7 @@
             this.Controls.Add(this.dgOne);
             this.Name = "GridView";
             this.Text = "Students";
+            this.Load += new System.EventHandler(this.GridView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgOne)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgTwo)).EndInit();
             this.ResumeLayout(false);
