@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using CollegeBusinessObjects;
 
@@ -36,7 +29,9 @@ namespace Project_WinForm
             }
             else if (Global.choice.Equals("Students", StringComparison.InvariantCultureIgnoreCase))
             {
+                Global.item = new Student();
                 students = new StudentList();
+
                 loadData(students);
             }
             else if (Global.choice.Equals("Courses", StringComparison.InvariantCultureIgnoreCase))
@@ -49,11 +44,15 @@ namespace Project_WinForm
             else if (Global.choice.Equals("Schedules", StringComparison.InvariantCultureIgnoreCase))
             {
                 schedules = new ScheduleList();
+                Global.item = new Schedule();
+
                 loadData(schedules);
             }
             else if (Global.choice.Equals("Locations", StringComparison.InvariantCultureIgnoreCase))
             {
                 locations = new LocationList();
+                Global.item = new Location();
+
                 loadData(locations);
             }
         }
@@ -116,7 +115,7 @@ namespace Project_WinForm
 
             foreach (PropertyInfo prop in props)
             {
-                if (manual == true && count == 0)
+                if (manual == false && count == 0)
                 {
                     prop.SetValue(item, (Global.list.GetMaxID() + 1).ToString());
                 }
@@ -131,6 +130,27 @@ namespace Project_WinForm
             Global.list.Add(item);
         }
 
-        
+        private void EditItem()
+        {
+            var item = Global.item;
+
+            var type = item.GetType();
+            PropertyInfo[] props = type.GetProperties();
+
+            var count = 0;
+
+            foreach (PropertyInfo prop in props)
+            {
+                if (count != 0)
+                {
+                    prop.SetValue(item, dgOne[count, dgOne.CurrentRow.Index].Value.ToString());
+                }
+
+                count++;
+            }
+
+            Global.list.Update(item);
+        }
+
     }
 }
