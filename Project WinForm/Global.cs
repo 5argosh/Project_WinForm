@@ -6,5 +6,6 @@ namespace Project_WinForm
     {
         public static string choice;
         public static DataList list;
+        public static Item item;
     }
 }

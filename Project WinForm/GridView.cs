@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,6 +30,8 @@ namespace Project_WinForm
             if (Global.choice.Equals("Instructors", StringComparison.InvariantCultureIgnoreCase))
             {
                 instructors = new InstructorList();
+                Global.item = new Instructor();
+
                 loadData(instructors);
             }
             else if (Global.choice.Equals("Students", StringComparison.InvariantCultureIgnoreCase))
@@ -39,6 +42,8 @@ namespace Project_WinForm
             else if (Global.choice.Equals("Courses", StringComparison.InvariantCultureIgnoreCase))
             {
                 courses = new CourseList();
+                Global.item = new Course();
+
                 loadData(courses);
             }
             else if (Global.choice.Equals("Schedules", StringComparison.InvariantCultureIgnoreCase))
@@ -90,36 +95,40 @@ namespace Project_WinForm
 
         private void btnAddOne_Click(object sender, EventArgs e)
         {
-            if (Global.choice.Equals("Instructors", StringComparison.InvariantCultureIgnoreCase))
+            if (Global.choice == "Courses")
             {
-                addInstructor();
-            }
-            else if (Global.choice.Equals("Students", StringComparison.InvariantCultureIgnoreCase))
+                AddItem(true);
+            } else
             {
-                addStudents();
-            }
-            else if (Global.choice.Equals("Courses", StringComparison.InvariantCultureIgnoreCase))
-            {
-                //addCourses();
+                AddItem(false);
             }
         }
 
-        private void addInstructor()
+
+        private void AddItem(bool manual)
         {
-            instructors = new InstructorList();
-            Instructor instructor = new Instructor(instructors.GetMaxID().ToString());
+            var item = Global.item;
 
-            instructor.LastName = dgOne[1, dgOne.CurrentRow.Index].Value.ToString();
-            instructor.FirstName = dgOne[2, dgOne.CurrentRow.Index].Value.ToString();
-            instructor.HireDate = dgOne[3, dgOne.CurrentRow.Index].Value.ToString();
-            instructor.Password = dgOne[4, dgOne.CurrentRow.Index].Value.ToString();
+            var type = item.GetType();
+            PropertyInfo[] props = type.GetProperties();
 
-            instructors.Add(instructor);
-        }
+            var count = 0;
 
-        private void addStudents()
-        {
+            foreach (PropertyInfo prop in props)
+            {
+                if (manual == true && count == 0)
+                {
+                    prop.SetValue(item, (Global.list.GetMaxID() + 1).ToString());
+                }
+                else
+                {
+                    prop.SetValue(item, dgOne[count, dgOne.CurrentRow.Index].Value.ToString());
+                }
 
+                count++;
+            }
+
+            Global.list.Add(item);
         }
 
         
