@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CollegeBusinessObjects;
 
 namespace Project_WinForm
 {
     public static class Global
     {
         public static string choice;
+        public static DataList list;
     }
 }

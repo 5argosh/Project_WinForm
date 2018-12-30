@@ -28,64 +28,64 @@ namespace Project_WinForm
         {
             if (Global.choice.Equals("Instructors", StringComparison.InvariantCultureIgnoreCase))
             {
-                loadInstructors();
+                instructors = new InstructorList();
+                loadData(instructors);
             }
             else if (Global.choice.Equals("Students", StringComparison.InvariantCultureIgnoreCase))
             {
-                loadStudents();
+                students = new StudentList();
+                loadData(students);
             }
             else if (Global.choice.Equals("Courses", StringComparison.InvariantCultureIgnoreCase))
             {
-                loadCourses();
+                courses = new CourseList();
+                loadData(courses);
             }
             else if (Global.choice.Equals("Schedules", StringComparison.InvariantCultureIgnoreCase))
             {
-                loadSchedules();
+                schedules = new ScheduleList();
+                loadData(schedules);
             }
             else if (Global.choice.Equals("Locations", StringComparison.InvariantCultureIgnoreCase))
             {
-                loadLocations();
+                locations = new LocationList();
+                loadData(locations);
             }
         }
 
-        private void loadInstructors()
-        {
-            instructors = new InstructorList();
-            instructors.Populate();
+        /* NEW */
 
-            dgOne.DataSource = instructors.DataTable;
+        private void filter(DataList list, string field, string value)
+        {
+            this.loadBase(list, true, field, value);
         }
 
-        private void loadStudents()
+        private void loadData(DataList list)
         {
-            students = new StudentList();
-            students.Populate();
-
-            dgOne.DataSource = students.DataTable;
+            this.loadBase(list, false, null, null);
         }
 
-        private void loadCourses()
+        private void loadBase(DataList list, bool filter, string field, string value)
         {
-            courses = new CourseList();
-            courses.Populate();
+            Global.list = list;
 
-            dgOne.DataSource = courses.DataTable;
+            lblTitle.Text = Global.choice;
+
+            if (filter)
+            {
+                list.Filter(field, value);
+            }
+            else
+            {
+                list.Populate();
+            }
+
+            dgOne.DataSource = list.DataTable;
         }
 
-        private void loadSchedules()
+    private void btnFilter_Click(object sender, EventArgs e)
         {
-            schedules = new ScheduleList();
-            schedules.Populate();
-
-            dgOne.DataSource = schedules.DataTable;
-        }
-
-        private void loadLocations()
-        {
-            locations = new LocationList();
-            locations.Populate();
-
-            dgOne.DataSource = locations.DataTable;
+            this.filter(Global.list, txtField.Text, txtValue.Text);
         }
 
         private void btnAddOne_Click(object sender, EventArgs e)
@@ -121,5 +121,7 @@ namespace Project_WinForm
         {
 
         }
+
+        
     }
 }
