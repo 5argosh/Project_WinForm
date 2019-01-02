@@ -66,6 +66,7 @@
             this.btnDeleteOne.TabIndex = 9;
             this.btnDeleteOne.Text = "Delete";
             this.btnDeleteOne.UseVisualStyleBackColor = true;
+            this.btnDeleteOne.Click += new System.EventHandler(this.btnDeleteOne_Click);
             // 
             // btnEditOne
             // 
@@ -75,6 +76,7 @@
             this.btnEditOne.TabIndex = 8;
             this.btnEditOne.Text = "Edit";
             this.btnEditOne.UseVisualStyleBackColor = true;
+            this.btnEditOne.Click += new System.EventHandler(this.btnEditOne_Click);
             // 
             // btnAddOne
             // 

@@ -12,6 +12,7 @@ namespace Project_WinForm
         CourseList courses;
         ScheduleList schedules;
         LocationList locations;
+        SectionStudentList sectionStudents;
 
         public GridView()
         {
@@ -87,7 +88,7 @@ namespace Project_WinForm
             dgOne.DataSource = list.DataTable;
         }
 
-    private void btnFilter_Click(object sender, EventArgs e)
+        private void btnFilter_Click(object sender, EventArgs e)
         {
             this.filter(Global.list, txtField.Text, txtValue.Text);
         }
@@ -97,7 +98,8 @@ namespace Project_WinForm
             if (Global.choice == "Courses")
             {
                 AddItem(true);
-            } else
+            }
+            else
             {
                 AddItem(false);
             }
@@ -152,5 +154,58 @@ namespace Project_WinForm
             Global.list.Update(item);
         }
 
+        private void btnEditOne_Click(object sender, EventArgs e)
+        {
+            EditItem();
+        }
+
+        private void btnDeleteOne_Click(object sender, EventArgs e)
+        {
+            DeleteItem();
+        }
+
+        private void DeleteItem()
+        {
+            Item item = new Item();
+
+            if (Global.choice == "Students")
+            {
+                
+                item.setID(dgOne[0, dgOne.CurrentRow.Index].Value.ToString());
+
+                string column = "StudentID";
+                string value = item.getID();
+
+                sectionStudents.Delete(column, value);
+
+                Global.list.Delete(item);
+            }
+            else if (Global.choice == "Sections")
+            {
+                //SectionStudentList sectionStudents = new SectionStudentList();
+                //ScheduleList schedules = new ScheduleList();
+
+                item.setID(dgOne[0, dgOne.CurrentRow.Index].Value.ToString());
+
+                string table2 = "Schedule";
+                string key = "SectionID";
+                string column = "ScheduleID";
+                string value = item.getID();
+
+                Global.list.Delete(table2, key, column, value);
+
+
+                Global.list.Delete(column, value);
+
+                Global.list.Delete(item);
+            }
+            else
+            {
+                item.setID(dgOne[0, dgOne.CurrentRow.Index].Value.ToString());
+
+                Global.list.Delete(item);
+            }
+        }
+        
     }
 }
