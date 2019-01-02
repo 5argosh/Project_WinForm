@@ -46,5 +46,11 @@ namespace Project_WinForm
             form.StartPosition = FormStartPosition.CenterScreen;
             form.Show();
         }
+
+        private void btnToughtCourses_Click(object sender, EventArgs e)
+        {
+            Global.choice = "TaughtCourses";
+            openForm();
+        }
     }
 }

@@ -13,6 +13,11 @@ namespace Project_WinForm
         ScheduleList schedules;
         LocationList locations;
         SectionStudentList sectionStudents;
+        SectionList sections;
+        ToughtCourseList toughtCourses;
+
+        Section section;
+        Location location;
 
         DataList list;
         string choice;
@@ -47,6 +52,8 @@ namespace Project_WinForm
                 item = new Course();
 
                 loadData(courses);
+
+                this.btnAddOne.Enabled = false;
             }
             else if (choice == "Schedules")
             {
@@ -61,6 +68,14 @@ namespace Project_WinForm
                 item = new Location();
 
                 loadData(locations);
+                this.btnAddOne.Enabled = false;
+            }
+            else if (choice == "TaughtCourses")
+            {
+                toughtCourses = new ToughtCourseList();
+                item = new ToughtCourse();
+
+                loadData(toughtCourses);
             }
         }
 
@@ -107,6 +122,8 @@ namespace Project_WinForm
             {
                 AddItem(false);
             }
+
+            loadData(this.list);
         }
 
         private void AddItem(bool manual)
@@ -130,6 +147,49 @@ namespace Project_WinForm
                 }
 
                 count++;
+            }
+
+            if (choice == "Schedules")
+            {
+                string day = props[3].GetValue(item).ToString();
+                string time = props[4].GetValue(item).ToString();
+                string sectionID = props[1].GetValue(item).ToString();
+                string locationID = props[2].GetValue(item).ToString();
+
+                section = new Section();
+                section.SectionID = sectionID;
+
+                sections = new SectionList();
+                sections.Populate(section);
+
+                location = new Location();
+                location.LocationID = locationID;
+
+                locations = new LocationList();
+                locations.Populate(location);
+
+
+                bool exists = list.Exists("Day", day, "Time", time, "SectionID", sectionID);
+
+                bool scheduled = list.Exists("Section", "Day", day, "Time", time, "InstructorID", section.InstructorID, "SectionID");
+
+                bool capacityExcceded = int.Parse(section.Capacity) > int.Parse(location.Capacity);
+
+                if (exists)
+                {
+                    MessageBox.Show("The location is already scheduled");
+                    return;
+                }
+                else if (scheduled)
+                {
+                    MessageBox.Show("Bla Bla");
+                    return;
+                }
+                else if (capacityExcceded)
+                {
+                    MessageBox.Show("Bla Bla");
+                    return;
+                }
             }
 
             list.Add(localItem);
@@ -160,20 +220,19 @@ namespace Project_WinForm
         private void btnEditOne_Click(object sender, EventArgs e)
         {
             EditItem();
+            loadData(this.list);
         }
 
         private void btnDeleteOne_Click(object sender, EventArgs e)
         {
             DeleteItem();
+            loadData(this.list);
         }
 
         private void DeleteItem()
         {
-            Item item = new Item();
-
             if (choice == "Students")
             {
-                
                 item.setID(dgOne[0, dgOne.CurrentRow.Index].Value.ToString());
 
                 string column = "StudentID";
@@ -189,22 +248,58 @@ namespace Project_WinForm
             {
                 item.setID(dgOne[0, dgOne.CurrentRow.Index].Value.ToString());
 
-                string table2 = "Schedule";
-                string key = "SectionID";
-                string column = "ScheduleID";
+                string column = "SectionID";
                 string value = item.getID();
 
-                list.Delete(table2, key, column, value);
+                sectionStudents = new SectionStudentList();
 
+                sectionStudents.Delete(column, value);
 
-                list.Delete(column, value);
+                schedules = new ScheduleList();
+
+                schedules.Delete(column, value);
+
+                list.Delete(item);
+            }
+            else if (choice == "Instructors")
+            {
+                item.setID(dgOne[0, dgOne.CurrentRow.Index].Value.ToString());
+
+                string column = "InstructorID";
+                string key = "SectionID";
+                string value = item.getID();
+
+                sections = new SectionList();
+                sectionStudents = new SectionStudentList();
+                schedules = new ScheduleList();
+
+                schedules.Delete("Section", column, key, value);
+                sectionStudents.Delete("Section", column, key, value);
+                sections.Delete(column, value);
+
+                list.Delete(item);
+            }
+            else if (choice == "TaughtCourses")
+            {
+                item.setID(dgOne[0, dgOne.CurrentRow.Index].Value.ToString());
+
+                string column = "TaughtCourseID";
+                string key = "SectionID";
+                string value = item.getID();
+
+                sections = new SectionList();
+                sectionStudents = new SectionStudentList();
+                schedules = new ScheduleList();
+
+                schedules.Delete("Section", column, key, value);
+                sectionStudents.Delete("Section", column, key, value);
+                sections.Delete(column, value);
 
                 list.Delete(item);
             }
             else
             {
                 item.setID(dgOne[0, dgOne.CurrentRow.Index].Value.ToString());
-
                 list.Delete(item);
             }
         }
