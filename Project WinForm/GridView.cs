@@ -14,6 +14,10 @@ namespace Project_WinForm
         LocationList locations;
         SectionStudentList sectionStudents;
 
+        DataList list;
+        string choice;
+        Item item;
+
         public GridView()
         {
             InitializeComponent();
@@ -21,60 +25,60 @@ namespace Project_WinForm
 
         private void GridView_Load(object sender, EventArgs e)
         {
-            if (Global.choice.Equals("Instructors", StringComparison.InvariantCultureIgnoreCase))
+            choice = Global.choice;
+
+            if (choice == "Instructors")
             {
                 instructors = new InstructorList();
-                Global.item = new Instructor();
+                item = new Instructor();
 
                 loadData(instructors);
             }
-            else if (Global.choice.Equals("Students", StringComparison.InvariantCultureIgnoreCase))
+            else if (choice == "Students")
             {
-                Global.item = new Student();
+                item = new Student();
                 students = new StudentList();
 
                 loadData(students);
             }
-            else if (Global.choice.Equals("Courses", StringComparison.InvariantCultureIgnoreCase))
+            else if (choice == "Courses")
             {
                 courses = new CourseList();
-                Global.item = new Course();
+                item = new Course();
 
                 loadData(courses);
             }
-            else if (Global.choice.Equals("Schedules", StringComparison.InvariantCultureIgnoreCase))
+            else if (choice == "Schedules")
             {
                 schedules = new ScheduleList();
-                Global.item = new Schedule();
+                item = new Schedule();
 
                 loadData(schedules);
             }
-            else if (Global.choice.Equals("Locations", StringComparison.InvariantCultureIgnoreCase))
+            else if (choice == "Locations")
             {
                 locations = new LocationList();
-                Global.item = new Location();
+                item = new Location();
 
                 loadData(locations);
             }
         }
 
-        /* NEW */
-
         private void filter(DataList list, string field, string value)
         {
+            this.list = list;
             this.loadBase(list, true, field, value);
         }
 
         private void loadData(DataList list)
         {
+            this.list = list;
             this.loadBase(list, false, null, null);
         }
 
         private void loadBase(DataList list, bool filter, string field, string value)
         {
-            Global.list = list;
-
-            lblTitle.Text = Global.choice;
+            lblTitle.Text = choice;
 
             if (filter)
             {
@@ -90,12 +94,12 @@ namespace Project_WinForm
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
-            this.filter(Global.list, txtField.Text, txtValue.Text);
+            this.filter(list, txtField.Text, txtValue.Text);
         }
 
         private void btnAddOne_Click(object sender, EventArgs e)
         {
-            if (Global.choice == "Courses")
+            if (choice == "Courses")
             {
                 AddItem(true);
             }
@@ -105,12 +109,11 @@ namespace Project_WinForm
             }
         }
 
-
         private void AddItem(bool manual)
         {
-            var item = Global.item;
+            var localItem = item;
 
-            var type = item.GetType();
+            var type = localItem.GetType();
             PropertyInfo[] props = type.GetProperties();
 
             var count = 0;
@@ -119,24 +122,24 @@ namespace Project_WinForm
             {
                 if (manual == false && count == 0)
                 {
-                    prop.SetValue(item, (Global.list.GetMaxID() + 1).ToString());
+                    prop.SetValue(localItem, (list.GetMaxID() + 1).ToString());
                 }
                 else
                 {
-                    prop.SetValue(item, dgOne[count, dgOne.CurrentRow.Index].Value.ToString());
+                    prop.SetValue(localItem, dgOne[count, dgOne.CurrentRow.Index].Value.ToString());
                 }
 
                 count++;
             }
 
-            Global.list.Add(item);
+            list.Add(localItem);
         }
 
         private void EditItem()
         {
-            var item = Global.item;
+            var localItem = item;
 
-            var type = item.GetType();
+            var type = localItem.GetType();
             PropertyInfo[] props = type.GetProperties();
 
             var count = 0;
@@ -145,13 +148,13 @@ namespace Project_WinForm
             {
                 if (count != 0)
                 {
-                    prop.SetValue(item, dgOne[count, dgOne.CurrentRow.Index].Value.ToString());
+                    prop.SetValue(localItem, dgOne[count, dgOne.CurrentRow.Index].Value.ToString());
                 }
 
                 count++;
             }
 
-            Global.list.Update(item);
+            list.Update(localItem);
         }
 
         private void btnEditOne_Click(object sender, EventArgs e)
@@ -168,7 +171,7 @@ namespace Project_WinForm
         {
             Item item = new Item();
 
-            if (Global.choice == "Students")
+            if (choice == "Students")
             {
                 
                 item.setID(dgOne[0, dgOne.CurrentRow.Index].Value.ToString());
@@ -176,15 +179,14 @@ namespace Project_WinForm
                 string column = "StudentID";
                 string value = item.getID();
 
+                sectionStudents = new SectionStudentList();
+
                 sectionStudents.Delete(column, value);
 
-                Global.list.Delete(item);
+                list.Delete(item);
             }
-            else if (Global.choice == "Sections")
+            else if (choice == "Sections")
             {
-                //SectionStudentList sectionStudents = new SectionStudentList();
-                //ScheduleList schedules = new ScheduleList();
-
                 item.setID(dgOne[0, dgOne.CurrentRow.Index].Value.ToString());
 
                 string table2 = "Schedule";
@@ -192,18 +194,18 @@ namespace Project_WinForm
                 string column = "ScheduleID";
                 string value = item.getID();
 
-                Global.list.Delete(table2, key, column, value);
+                list.Delete(table2, key, column, value);
 
 
-                Global.list.Delete(column, value);
+                list.Delete(column, value);
 
-                Global.list.Delete(item);
+                list.Delete(item);
             }
             else
             {
                 item.setID(dgOne[0, dgOne.CurrentRow.Index].Value.ToString());
 
-                Global.list.Delete(item);
+                list.Delete(item);
             }
         }
         
