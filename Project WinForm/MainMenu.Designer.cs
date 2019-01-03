@@ -34,6 +34,9 @@
             this.btnSchedules = new System.Windows.Forms.Button();
             this.btnLocations = new System.Windows.Forms.Button();
             this.btnToughtCourses = new System.Windows.Forms.Button();
+            this.btnAvgGrade = new System.Windows.Forms.Button();
+            this.btnTotalHours = new System.Windows.Forms.Button();
+            this.btnSections = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnStudents
@@ -96,11 +99,44 @@
             this.btnToughtCourses.UseVisualStyleBackColor = true;
             this.btnToughtCourses.Click += new System.EventHandler(this.btnToughtCourses_Click);
             // 
+            // btnAvgGrade
+            // 
+            this.btnAvgGrade.Location = new System.Drawing.Point(52, 395);
+            this.btnAvgGrade.Name = "btnAvgGrade";
+            this.btnAvgGrade.Size = new System.Drawing.Size(114, 46);
+            this.btnAvgGrade.TabIndex = 6;
+            this.btnAvgGrade.Text = "Average Grade Report";
+            this.btnAvgGrade.UseVisualStyleBackColor = true;
+            this.btnAvgGrade.Click += new System.EventHandler(this.btnAvgGrade_Click);
+            // 
+            // btnTotalHours
+            // 
+            this.btnTotalHours.Location = new System.Drawing.Point(52, 447);
+            this.btnTotalHours.Name = "btnTotalHours";
+            this.btnTotalHours.Size = new System.Drawing.Size(114, 46);
+            this.btnTotalHours.TabIndex = 7;
+            this.btnTotalHours.Text = "Total Scheduled Hours Report";
+            this.btnTotalHours.UseVisualStyleBackColor = true;
+            this.btnTotalHours.Click += new System.EventHandler(this.btnTotalHours_Click);
+            // 
+            // btnSections
+            // 
+            this.btnSections.Location = new System.Drawing.Point(52, 343);
+            this.btnSections.Name = "btnSections";
+            this.btnSections.Size = new System.Drawing.Size(114, 46);
+            this.btnSections.TabIndex = 8;
+            this.btnSections.Text = "Sections";
+            this.btnSections.UseVisualStyleBackColor = true;
+            this.btnSections.Click += new System.EventHandler(this.btnSections_Click);
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(219, 358);
+            this.ClientSize = new System.Drawing.Size(219, 532);
+            this.Controls.Add(this.btnSections);
+            this.Controls.Add(this.btnTotalHours);
+            this.Controls.Add(this.btnAvgGrade);
             this.Controls.Add(this.btnToughtCourses);
             this.Controls.Add(this.btnLocations);
             this.Controls.Add(this.btnSchedules);
@@ -121,6 +157,9 @@
         private System.Windows.Forms.Button btnSchedules;
         private System.Windows.Forms.Button btnLocations;
         private System.Windows.Forms.Button btnToughtCourses;
+        private System.Windows.Forms.Button btnAvgGrade;
+        private System.Windows.Forms.Button btnTotalHours;
+        private System.Windows.Forms.Button btnSections;
     }
 }
 

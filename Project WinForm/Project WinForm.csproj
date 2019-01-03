@@ -32,8 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CollegeBusinessObjects">
-      <HintPath>..\..\Adv_Project\CollegeBusinessObjects\bin\Debug\CollegeBusinessObjects.dll</HintPath>
+    <Reference Include="CollegeBusinessObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Documents\Polytechnic\Advanced Try2\Adv_Project\CollegeBusinessObjects\bin\Debug\CollegeBusinessObjects.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AverageGrade.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AverageGrade.Designer.cs">
+      <DependentUpon>AverageGrade.cs</DependentUpon>
+    </Compile>
     <Compile Include="Global.cs" />
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
@@ -63,6 +70,15 @@
     <Compile Include="GridView.Designer.cs">
       <DependentUpon>GridView.cs</DependentUpon>
     </Compile>
+    <Compile Include="TotalHours.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TotalHours.Designer.cs">
+      <DependentUpon>TotalHours.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="AverageGrade.resx">
+      <DependentUpon>AverageGrade.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </EmbeddedResource>
@@ -77,6 +93,9 @@
     </Compile>
     <EmbeddedResource Include="GridView.resx">
       <DependentUpon>GridView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TotalHours.resx">
+      <DependentUpon>TotalHours.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
